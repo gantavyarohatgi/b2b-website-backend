@@ -30,12 +30,12 @@ app.post('/signup', async (req, res) => {
   try {
     const user = new User({ company, email, password });
     await user.save();
-    res.status(201).json({ message: 'User registered with MongoDB' });
+    res.status(201).json({ message: 'You have successfully registered!' });
   } catch (err) {
     if (err.code === 11000) {
-      res.status(400).json({ message: 'Email already exists' });
+      res.status(400).json({ message: 'This email already exists. Please use another one' });
     } else {
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json({ message: 'Internal server error. Try again later' });
     }
   }
 });
@@ -47,7 +47,7 @@ app.post('/login', async (req, res) => {
   const user = await User.findOne({ email, password });
 
   if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    return res.status(401).json({ message: 'Username or Password incorrect. Please enter valid credentials' });
   }
 
   res.status(200).json({ message: 'Login successful' });
